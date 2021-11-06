@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Entrar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .login-panel {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<div class="jumbotron text-center" style="background-color: #0e0f11">
+    <img src="/resources/indice.png" alt="indice" class="img-responsive"
+         style="display: block; margin-left: auto; margin-right: auto;">
+</div>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading" style="background-color: #333; color: white;">
+                        <h3 class="panel-title">Entrar</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-signin" method="post" action="/login">
+                            <h2 class="form-signin-heading">Please sign in</h2>
+                            <p>
+                                <label for="username" class="sr-only">Username</label>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+                            </p>
+                            <p>
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                            </p>
+                            <input name="_csrf" type="hidden" value="5afceb68-dba5-4b41-ab1a-c4844fd34bbe" />
+                            <a href="/register">Criar uma conta</a>
+                            <button class="btn btn-lg btn-primary btn-block btn-success" type="submit">Sign in</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

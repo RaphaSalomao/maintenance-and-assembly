@@ -1,0 +1,2 @@
+ALTER TABLE maintenance_request ADD COLUMN status VARCHAR(50) DEFAULT 'PENDING';
+ALTER TABLE upgrade_request     ADD COLUMN status VARCHAR(50) DEFAULT 'PENDING';

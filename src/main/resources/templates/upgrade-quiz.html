@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Quiz </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .form-panel {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+        }
+        
+        .radio-options {
+            display: block;
+        }
+        
+        .question-radio-block div label {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto;">
+    </div>
+    <div class="w-80 p-3">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default form-panel">
+                    <div class="panel-heading" style="background-color: #333; color: white;">
+                        <h3 class="panel-title">Upgrade</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form th:action="@{/upgrade}" th:object="${upgradeInfo}" method="post">
+                            <div class="form-group">
+                                <div class="question">
+                                    <label style="display: block">Sua maquina é empresarial ou pessoal?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input type="radio" name="question" value="Empresarial"
+                                               th:field="*{isMachineBusinessOrPersonal}"/>
+                                        <span>Empresarial</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="Pessoal"
+                                               th:field="*{isMachineBusinessOrPersonal}"/>
+                                        <span>Pessoal</span>
+                                    </label>
+                                    </div>
+                                </div>
+                                <div class="question">
+                                    <label style="display: block">Você está tendo dificuldades para rodar algum programa
+                                    especifico?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input class="radio-q-1" type="radio" name="question" value=""
+                                               th:field="*{softwareHardToRun}"
+                                               onclick="changeActive(1, true); changeActive(11, true)"/>
+                                        <span>Sim</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="Não"
+                                               th:field="*{softwareHardToRun}"
+                                               onclick="changeActive(1, false); changeActive(11, false)"/>
+                                        <span>Não</span>
+                                    </label>
+                                    </div>
+                                    <label>
+                                    <span id="other-11" style="display: none;">Qual?</span>
+                                    <textarea id="other-1" class="form-control" name="question"
+                                              th:field="*{softwareHardToRun}"
+                                              style="display: none"></textarea>
+                                </label>
+                                </div>
+                                <div class="question">
+                                    <label style="display: block">Você está precisando de mais armazenamento?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input type="radio" name="question" value=""
+                                               th:field="*{storageAmount}"
+                                               onclick="changeActive(2, true); changeActive(21, true)"/>
+                                        <span>Sim</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="nao"
+                                               th:field="*{storageAmount}"
+                                               onclick="changeActive(2, false); changeActive(21, false);"/>
+                                        <span>Não</span>
+                                    </label>
+                                    </div>
+                                </div>
+                                <label>
+                                <span id="other-21" style="display: none;">Quantos GB?</span>
+                                    <textarea id="other-2" class="form-control" name="question"
+                                              th:field="*{storageAmount}"
+                                              style="display: none"></textarea>
+                            </label>
+                                <div class="question">
+                                    <label style="display: block">Se após responder as questões ainda quiser adicionar mais
+                                    informações, fique a vontade e utilize a caixa de texto abaixo!</label>
+                                    <label>
+                                    <textarea class="form-control" name="question"
+                                        th:field="*{additionalInfo}"></textarea>
+                                </label>
+                                </div>
+                                <input type="submit" class="btn btn-default btn-success" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // this function changes the visibility of a element wich has the id radio-other plus number
+    function changeActive(number, isOther) {
+        var other = document.getElementById('other-' + number);
+        if (isOther) {
+            other.style.display = 'block';
+        } else {
+            other.style.display = 'none';
+        }
+    }
+
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>

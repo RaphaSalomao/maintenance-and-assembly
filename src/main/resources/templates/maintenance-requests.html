@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Requisições</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .container-panel {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+            border-radius: 40px;
+        }
+        
+        .request-table tbody tr:nth-child(even) {
+            background-color: #c8c8c8;
+        }
+        
+        .request-table tbody tr {
+            color: black;
+        }
+        
+        .request-table {
+            background-color: #333;
+            color: #fff;
+            border-color: #0e0f11;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #000;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11; margin-top: 50px;">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto;">
+    </div>
+    <!-- Made a requests table using bootstrap -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Requisições</h1>
+                <table class="table table-striped request-table">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Solicitante</th>
+                            <th>Máquina Liga?</th>
+                            <th>Já Fez Manutenção Preventiva?</th>
+                            <th>Será Apenas Limpeza?</th>
+                            <th>Bips Botão Power</th>
+                            <th>Informação Adicional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="request : ${requests}">
+                            <td>
+                                <a th:text="${request.code}" th:href="@{/parts/{id}(id=${request.id})}"></a>
+                            </td>
+                            <td th:text="${request.user.name}"></td>
+                            <td th:text="${request.maintenanceInfo.isMachineTurningOn}"></td>
+                            <td th:text="${request.maintenanceInfo.howManyTimeSincePreventiveMaintenance}"></td>
+                            <td th:text="${request.maintenanceInfo.willItBeCompleteCleaning}"></td>
+                            <td th:text="${request.maintenanceInfo.powerButtonBeep}"></td>
+                            <td th:text="${request.maintenanceInfo.additionalInfo}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    // change the color of the element by the given id
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Requisições</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+            margin-right: 20px;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .btn-success:active:after {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .description {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+            border-radius: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .description label {
+            display: block;
+        }
+        
+        .description label span {
+            font-weight: lighter;
+        }
+        
+        .part-table tbody tr:nth-child(even) {
+            background-color: #c8c8c8;
+        }
+        
+        .part-table tbody tr {
+            color: black;
+        }
+        
+        .part-table {
+            width: 40%;
+            background-color: #c8c8c8;
+            color: #fff;
+            border-color: #0e0f11;
+            padding: 20px;
+            border-radius: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11; margin-top: 50px;">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto;">
+    </div>
+    <!-- Made a requests table using bootstrap -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Manutenções</h1>
+                <div th:each="maintenance : ${maintenances}">
+                    <div class="description">
+                        <h3>Manutenção Número: <span th:text="${maintenance.code}"></span></h3>
+                        <h4>Status: <span th:text="${maintenance.status.description}"></span></h4>
+                        <h3>Descrição</h3>
+                        <div>
+                            <label>Sua maquina está em funcionamento?</label>
+                            <label>Resposta: 
+                                <span th:text="${maintenance.maintenanceInfo.isMachineTurningOn}"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>Quanto tempo faz que a maquina passou pelo processo de manuntenção preventiva?</label>
+                            <label>Resposta: 
+                                <span th:text="${maintenance.maintenanceInfo.howManyTimeSincePreventiveMaintenance}"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>Gostaria de apenas realizar uma limpeza completa?</label>
+                            <label>
+                                Resposta:
+                                <span th:text="${maintenance.maintenanceInfo.willItBeCompleteCleaning}"></span> 
+                            </label>
+                        </div>
+                        <div>
+                            <label>Após acionar o botão de ligar ocorre:</label>
+                            <label>
+                                Resposta: 
+                                <span th:text="${maintenance.maintenanceInfo.powerButtonBeep}"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>Informação Adicional:</label>
+                            <label>
+                                Resposta: 
+                                <span th:text="${maintenance.maintenanceInfo.additionalInfo}"></span>
+                            </label>
+                        </div>
+                        <div th:if="${not #lists.isEmpty(maintenance.parts.part)}">
+                            <h3>Orçamento</h3>
+                            <!-- repair budget table -->
+                            <div class="table-responsive">
+                                <table class="table table-striped part-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Quantidade</th>
+                                            <th>Preço Unitário</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${maintenance.parts.part}">
+                                            <td th:text="${item.name}"></td>
+                                            <td th:text="${item.quantity}"></td>
+                                            <td th:text="${item.price}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <label>Total: R$ <span th:text="${maintenance.parts.total}"></span></label>
+                            <!-- button 'accept' and button 'refuse' -->
+                            <div class="btn-group" role="group" aria-label="..." th:if="${maintenance.status} == ${status}">
+                                <a th:href="@{/approve/maintenance/{id}(id=${maintenance.id})}"><button type="button" class="btn btn-success">Aprovar Orçamento</button></a>
+                                <a th:href="@{/cancel/maintenance/{id}(id=${maintenance.id})}"><button type="button" class="btn btn-success">Recusar Orçamento</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+<script>
+    // change the color of the element by the given id
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>

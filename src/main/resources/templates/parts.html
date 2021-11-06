@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Orçamento</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .container-panel {
+            width: 60%;
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+            border-radius: 40px;
+        }
+        
+        .container-panel {
+            margin: 0 auto;
+        }
+        
+        .readroot {
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11; margin-top: 50px;">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto;">
+    </div>
+    <div id="readroot" style="display: none" class="readroot">
+        <div class="form-group" style="margin-right: 20px;">
+            <label for="name" style="display: block;">Item:</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Ex: Processador">
+        </div>
+        <div class="form-group" style="margin-right: 20px;">
+            <label for="price" style="display: block;">Preço:</label>
+            <input type="text" class="form-control" name="price" id="price" placeholder="Ex: 100.00">
+        </div>
+        <div class="form-group" style="margin-right: 20px;">
+            <label for="quantity" style="display: block;">Quantidade:</label>
+            <input type="number" class="form-control" name="quantity" id="quantity" placeholder="Ex: 1">
+        </div>
+    </div>
+    <div class="container-panel">
+        <div>
+            <form th:action="@{/parts}" th:object="${part}" method="post" class="form-inline">
+                <span id="writeroot"></span>
+                <button type="button" class="btn btn-success" style="display: block; margin-top: 20px;" onclick="moreFields()">Adicionar Item
+            </button>
+
+                <label style="margin-top: 20px;">Orçamento destinado a:</label>
+                <div class="radio-options">
+                    <label>
+                    <input type="radio" value="MAINTENANCE"
+                        th:field="*{type}" checked/>
+                    <span>Manutenção</span>
+                </label>
+                    <label>
+                    <input type="radio" value="UPGRADE"
+                        th:field="*{type}"/>
+                    <span>Upgrade</span>
+                </label>
+                </div>
+                <input type="hidden" th:field="*{id}" value="${part.id}" />
+                <button type="submit" class="btn btn-success" style="display: block; margin-top: 20px;">Confirmar</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+<script>
+    var counter = 0;
+
+    function retrieveFields(counter) {
+        var newFields = `
+        <div id="readroot" style="display: none" class="readroot">
+            <div class="form-group" style="margin-right: 20px;">
+                <label for="name" style="display: block;">Item:</label>
+                <input type="text" class="form-control" name="name" id="name${counter}" placeholder="Ex: Processador">
+            </div>
+            <div class="form-group" style="margin-right: 20px;">
+                <label for="price" style="display: block;">Preço:</label>
+                <input type="text" class="form-control" name="price" id="price${counter}" placeholder="Ex: 100.00">
+            </div>
+            <div class="form-group" style="margin-right: 20px;">
+                <label for="quantity" style="display: block;">Quantidade:</label>
+                <input type="number" class="form-control" name="quantity" id="quantity${counter}" placeholder="Ex: 1">
+            </div>
+        </div>
+        `;
+        var div = document.createElement('div');
+        div.innerHTML = newFields.trim();
+
+        return div.firstChild;
+    }
+
+    function moreFields() {
+        counter++;
+        var newFields = retrieveFields(counter);
+        newFields.style.display = 'block';
+        var insertHere = document.getElementById('writeroot');
+        insertHere.parentNode.insertBefore(newFields, insertHere);
+    }
+
+    window.onload = moreFields;
+
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>

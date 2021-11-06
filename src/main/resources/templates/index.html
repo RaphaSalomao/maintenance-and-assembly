@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .container-panel {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+            border-radius: 40px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11; margin-top: 50px;">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto; margin-top: 50px;">
+    </div>
+
+    <div class="container container-panel">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Manutenção Montagem</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam, asperiores, atque, autem beatae consequuntur corporis cumque debitis doloremque dolores dolorum eaque eius enim error esse et eveniet facilis fuga fugiat fugit harum illo impedit
+                    in inventore ipsa ipsum iste itaque iure laboriosam laborum laudantium magnam magni maxime minima minus modi molestiae nam necessitatibus nemo neque nihil nobis nostrum nulla numquam odio officia omnis optio pariatur perferendis perspiciatis
+                    placeat porro possimus praesentium quae quam quas quia quibusdam quidem quis quod quos ratione recusandae rem repellendus reprehenderit repudiandae rerum saepe sapiente sequi similique sint soluta sunt suscipit temporibus tenetur totam
+                    ullam unde velit voluptatem voluptates.
+                </p>
+            </div>
+        </div>
+        <!-- made two buttons to login and register -->
+        <div class="row" th:if="${role == 'ADMIN' || role == 'CUSTOMER' || role == 'ANONYMOUS'}">
+            <div class="col-md-6">
+                <a href="/maintenance" class="btn btn-success btn-lg btn-block">Solicite Uma Manutenção</a>
+            </div>
+            <div class="col-md-6">
+                <a href="/upgrade" class="btn btn-success btn-lg btn-block">Solicite Um Upgrade</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // change the color of the element by the given id
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>

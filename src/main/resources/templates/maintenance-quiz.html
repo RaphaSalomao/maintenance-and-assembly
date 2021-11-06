@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manutenção Montagem | Quiz </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0e0f11;
+            color: #fff;
+        }
+        
+        .login-panel {
+            background-color: #0e0f11;
+            border-radius: 10px;
+            margin-top: 50px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #000;
+        }
+        
+        .btn-success {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-success:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .jumbotron {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .form-panel {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+            padding: 20px;
+        }
+        
+        .radio-options {
+            display: block;
+        }
+        
+        .question-radio-block div label {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #333; border: none;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="abc1" class="navbar-brand " href="/" style="color: gray" onmouseover="changeColor(abc1, 'yellow')" onmouseout="changeColor(abc1, 'gray')">Manutenção e
+                Montagem</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="abc2" href="/" style="color: gray" onmouseover="changeColor(abc2, 'yellow')" onmouseout="changeColor(abc2, 'gray')">Home</a></li>
+                <li><a id="abc4" href="/contact" style="color: gray" onmouseover="changeColor(abc4, 'yellow')" onmouseout="changeColor(abc4, 'gray')">Contact</a></li>
+                <li><a id="abc5" href="/login" style="color: gray" onmouseover="changeColor(abc5, 'yellow')" onmouseout="changeColor(abc5, 'gray')" sec:authorize="!isAuthenticated()">Login</a></li>
+                <li><a id="abc7" href="/register" style="color: gray" onmouseover="changeColor(abc7, 'yellow')" onmouseout="changeColor(abc7, 'gray')" sec:authorize="!isAuthenticated()">Registrar</a></li>
+                <li th:if="${role == 'ADMIN'}"><a id="abc8" href="/register" style="color: gray;" onmouseover="changeColor(abc8, 'yellow')" onmouseout="changeColor(abc8, 'gray')">Registrar Novo Operador</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc9" href="/maintenance-requests" style="color: gray;" onmouseover="changeColor(abc9, 'yellow')" onmouseout="changeColor(abc9, 'gray')">Orçar Manutenções</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'USER'}"><a id="abc10" href="/upgrade-requests" style="color: gray;" onmouseover="changeColor(abc10, 'yellow')" onmouseout="changeColor(abc10, 'gray')">Orçar Upgrades</a>
+                </li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc11" href="/my-maintenances" style="color: gray;" onmouseover="changeColor(abc11, 'yellow')" onmouseout="changeColor(abc11, 'gray')">Minhas
+                Manutenções</a></li>
+                <li th:if="${role == 'ADMIN' || role == 'CUSTOMER'}"><a id="abc12" href="/my-upgrades" style="color: gray;" onmouseover="changeColor(abc12, 'yellow')" onmouseout="changeColor(abc12, 'gray')">Meus
+                Upgrades</a></li>
+                <li><a id="abc6" href="/logout" style="color: gray" onmouseover="changeColor(abc6, 'yellow')" onmouseout="changeColor(abc6, 'gray')" sec:authorize="isAuthenticated()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="jumbotron text-center" style="background-color: #0e0f11">
+        <img src="/resources/indice.png" alt="indice" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto;">
+    </div>
+    <div class="w-80 p-3">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default form-panel">
+                    <div class="panel-heading" style="background-color: #333; color: white;">
+                        <h3 class="panel-title">Reparo</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form th:action="@{/maintenance}" th:object="${maintenanceInfo}" method="post">
+                            <div class="form-group">
+                                <div class="question">
+                                    <label style="display: block">Sua maquina está em funcionamento?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input type="radio" name="question" value="sim"
+                                               th:field="*{isMachineTurningOn}"
+                                               onclick="changeActive(1, false)"/>
+                                        <span>Sim</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="nao"
+                                               th:field="*{isMachineTurningOn}"
+                                               onclick="changeActive(1, false)"/>
+                                        <span>Não</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" value="" name="isMachineTurningOn" onclick="changeActive(1, true)"/>
+                                        <span>Outros</span>
+                                    </label>
+                                    </div>
+                                    <label>
+                                    <textarea id="other-1" class="form-control" name="question"
+                                              th:field="*{isMachineTurningOn}"
+                                              style="display: none"></textarea>
+                                </label>
+                                </div>
+                                <div class="question">
+                                    <label style="display: block">Quanto tempo faz que a maquina passou pelo processo de
+                                    manuntenção preventiva?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input class="radio-q-1" type="radio" name="question2" value="Muito tempo"
+                                               th:field="*{howManyTimeSincePreventiveMaintenance}"
+                                               onclick="changeActive(2, false)"/>
+                                        <span>Muito tempo</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question2" value="Pouco tempo"
+                                               th:field="*{howManyTimeSincePreventiveMaintenance}"
+                                               onclick="changeActive(2, false)"/>
+                                        <span>Pouco tempo</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question2" value="Nunca"
+                                               th:field="*{howManyTimeSincePreventiveMaintenance}"
+                                               onclick="changeActive(2, false)"/>
+                                        <span>Nunca</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" value="" name="howManyTimeSincePreventiveMaintenance" onclick="changeActive(2, true)"/>
+                                        <span>Outros</span>
+                                    </label>
+                                    </div>
+                                    <label>
+                                    <textarea id="other-2" class="form-control" name="question"
+                                              th:field="*{howManyTimeSincePreventiveMaintenance}"
+                                              style="display: none"></textarea>
+                                </label>
+                                </div>
+                                <div class="question">
+                                    <label style="display: block">Gostaria de apenas realizar uma limpeza completa?</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input type="radio" name="question" value="sim"
+                                               th:field="*{willItBeCompleteCleaning}"/>
+                                        <span>Sim</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="nao"
+                                               th:field="*{willItBeCompleteCleaning}"/>
+                                        <span>Não</span>
+                                    </label>
+                                    </div>
+                                </div>
+                                <div class="question question-radio-block">
+                                    <label style="display: block">Após acionar o botão de ligar selecione a opção
+                                    correspondente.</label>
+                                    <div class="radio-options">
+                                        <label>
+                                        <input type="radio" name="question" value="1 Bip Curto"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>1 Bip Curto</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="2 Bips Curtos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>2 Bips Curtos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="1 Bip Longo e 1 Curto"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>1 Bip Longo e 1 Curto</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="1 Bip Longo e 2 Curtos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>1 Bip Longo e 2 Curtos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="1 Bip Longo e 3 Curtos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>1 Bip Longo e 3 Curtos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="1 Bip Longo e 9 Curtos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>1 Bip Longo e 9 Curtos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="Longos Bips Contínuos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>Longos Bips Contínuos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="Curtos Bips Contínuos"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>Curtos Bips Contínuos</span>
+                                    </label>
+                                        <label>
+                                        <input type="radio" name="question" value="Nenhuma das opções"
+                                               th:field="*{powerButtonBeep}"/>
+                                        <span>Nenhuma das opções</span>
+                                    </label>
+                                    </div>
+                                </div>
+                                <div class="question">
+                                    <label style="display: block">Se após responder as questões ainda quiser adicionar mais informações, fique a vontade e utilize a caixa de texto abaixo!</label>
+                                    <label>
+                                    <textarea th:field="*{additionalInfo}" class="form-control" name="question"></textarea>
+                                </label>
+                                </div>
+                                <input type="submit" class="btn btn-default btn-success" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // this function changes the visibility of a element wich has the id radio-other plus number
+    function changeActive(number, isOther) {
+        var other = document.getElementById('other-' + number);
+        if (isOther) {
+            other.style.display = 'block';
+        } else {
+            other.style.display = 'none';
+        }
+    }
+
+    // change the color of the element by the given id
+    function changeColor(id, color) {
+        id.style.color = color;
+    }
+</script>
+
+</html>
